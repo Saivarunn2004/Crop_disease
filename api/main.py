@@ -5,7 +5,18 @@ import numpy as np
 from io import BytesIO
 from PIL import Image
 import tensorflow as tf
+from keras.layers import RandomRotation
 
+# Monkey-patch RandomRotation to ignore 'value_range' if passed
+original_init = RandomRotation.__init__
+
+def patched_init(self, *args, **kwargs):
+    kwargs.pop('value_range', None)  # Remove 'value_range' argument
+    original_init(self, *args, **kwargs)
+
+RandomRotation.__init__ = patched_init
+
+# Initialize FastAPI app
 app = FastAPI()
 
 origins = [
@@ -20,6 +31,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+# Load the pre-trained model (without 'value_range' issue)
 MODEL = tf.keras.models.load_model("/Users/saivarun/Documents/Projects/Models/my_model.keras")
 
 CLASS_NAMES = ["Early Blight", "Late Blight", "Healthy"]

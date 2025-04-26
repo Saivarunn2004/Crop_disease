@@ -1,0 +1,24 @@
+<!-- In login.ejs and signup.ejs -->
+<%- include('partials/header') %>
+    <main class="auth-page">
+        <div class="auth-container">
+            <h1>Login</h1>
+            <% if (error) { %>
+                <p class="error"><%= error %></p>
+            <% } %>
+            <form action="/login" method="POST">
+                <div class="form-group">
+                    <input type="email" name="email" placeholder="Email" required>
+                </div>
+                <div class="form-group">
+                    <input type="password" name="password" placeholder="Password" required>
+                </div>
+                <button type="submit">Login</button>
+            </form>
+            <div class="auth-links">
+                <p>Don't have an account? <a href="/signup">Sign up</a></p>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

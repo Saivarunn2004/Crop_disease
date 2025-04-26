@@ -1,0 +1,16 @@
+<%- include('partials/header') %>
+    <main>    
+        <form action="/predict" method="POST" enctype="multipart/form-data">
+            <input type="file" name="image" accept="image/*" required>
+            <button type="submit">Predict</button>
+        </form>
+        
+        <% if (prediction) { %>
+            <div class="result">
+                <h3>Prediction: <%= prediction.class %></h3>
+                <p>Confidence: <%= (prediction.confidence * 100).toFixed(2) %>%</p>
+            </div>
+        <% } %>
+    </main>
+</body>
+</html>

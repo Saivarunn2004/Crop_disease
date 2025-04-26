@@ -1,0 +1,22 @@
+<%- include('partials/header') %>
+    <main>
+        
+        <div class="history-container">
+            <% if (predictions && predictions.length > 0) { %>
+                <% predictions.forEach(prediction => { %>
+                    <div class="prediction-card">
+                        <img src="/uploads/<%= prediction.image %>" alt="Prediction image">
+                        <div class="prediction-details">
+                            <h3><%= prediction.prediction %></h3>
+                            <p>Confidence: <%= (prediction.confidence * 100).toFixed(2) %>%</p>
+                            <small><%= prediction.createdAt.toLocaleDateString() %></small>
+                        </div>
+                    </div>
+                <% }) %>
+            <% } else { %>
+                <p>No predictions found in your history.</p>
+            <% } %>
+        </div>
+    </main>
+</body>
+</html>
