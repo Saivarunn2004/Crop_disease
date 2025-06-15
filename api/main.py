@@ -31,9 +31,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Load the pre-trained model (without 'value_range' issue)
+# Load the pre-trained model
 MODEL = tf.keras.models.load_model("/Users/saivarun/Documents/Projects/Models/my_model.keras")
-
 CLASS_NAMES = ["Early Blight", "Late Blight", "Healthy"]
 
 @app.get("/ping")
@@ -41,8 +40,10 @@ async def ping():
     return "Hello, I am alive"
 
 def read_file_as_image(data) -> np.ndarray:
-    image = np.array(Image.open(BytesIO(data)))
-    return image
+    image = Image.open(BytesIO(data))
+    image = image.convert("RGB")
+    image = image.resize((256, 256))
+    return np.array(image)
 
 @app.post("/predict")
 async def predict(
@@ -50,7 +51,7 @@ async def predict(
 ):
     image = read_file_as_image(await file.read())
     img_batch = np.expand_dims(image, 0)
-    
+
     predictions = MODEL.predict(img_batch)
 
     predicted_class = CLASS_NAMES[np.argmax(predictions[0])]

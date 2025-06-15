@@ -41,8 +41,9 @@ exports.signup = async (req, res) => {
     }
 
     const newUser = await User.create({ username, email, password });
-    res.redirect('/login',{user:req.user });
+    res.redirect('/login');
   } catch (err) {
+    console.log(err);
     res.render('signup', { 
       error: 'Registration failed',
       username: req.body.username,
